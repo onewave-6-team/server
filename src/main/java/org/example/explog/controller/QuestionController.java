@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.explog.dto.request.QuestionAnswerRequest;
 import org.example.explog.dto.response.QuestionListResponse;
 import org.example.explog.service.QnaService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +32,8 @@ public class QuestionController {
             @RequestBody @Valid QuestionAnswerRequest request
     ) {
         qnaService.saveAnswer(questionId, request);
-        return ResponseEntity.ok().build();
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(null);
     }
 }

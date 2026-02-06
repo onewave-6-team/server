@@ -6,9 +6,11 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.explog.dto.request.ExperienceSaveRequest;
 import org.example.explog.dto.response.ExperienceDetailResponse;
+import org.example.explog.dto.response.ExperienceIdResponse;
 import org.example.explog.dto.response.ExperienceListResponse;
 import org.example.explog.dto.response.ExperienceSummaryDto;
 import org.example.explog.service.ExperienceService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,9 +36,12 @@ public class ExperienceController {
 
     @Operation(summary = "경험 수기 작성")
     @PostMapping
-    public ResponseEntity<Void> createExperience(@RequestBody @Valid ExperienceSaveRequest request) {
-        experienceService.createExperience(request);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<ExperienceIdResponse> createExperience(@RequestBody @Valid ExperienceSaveRequest request) {
+        Long savedId = experienceService.createExperience(request);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new ExperienceIdResponse(savedId));
     }
 
     @Operation(summary = "폴더별 경험 리스트 조회")

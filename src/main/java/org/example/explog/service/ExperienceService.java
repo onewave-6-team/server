@@ -52,18 +52,19 @@ public class ExperienceService {
 
     // 2번 기능: 경험 수기 작성
     @Transactional
-    public void createExperience(ExperienceSaveRequest request) {
-        // [하드코딩] 무조건 1번 유저가 작성한 것으로 저장
+    public Long createExperience(ExperienceSaveRequest request) {
         User user = userRepository.findById(1L).orElseThrow();
-        
+
         Experience experience = Experience.builder()
                 .input(request.input())
-                .user(user) // 1번 유저 세팅
+                .user(user)
                 .sourceType(SourceType.MANUAL)
                 .sourceUrl(null)
                 .build();
-        
-        experienceRepository.save(experience);
+
+        Experience savedExperience = experienceRepository.save(experience);
+
+        return savedExperience.getId();
     }
 
     // 3번 기능: 폴더 리스트 조회
