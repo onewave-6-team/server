@@ -48,9 +48,6 @@ public class ExperienceService {
 
         Experience savedExperience = experienceRepository.save(experience);
 
-        // 2. 비동기 AI 분석 요청 (결과를 기다리지 않고 실행만 시켜둠) 🚀
-        aiAnalysisService.runAnalysis(savedExperience.getId(), request.input());
-
         // 3. ID 바로 반환 (프론트는 기다리지 않음)
         return savedExperience.getId();
     }

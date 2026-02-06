@@ -9,6 +9,7 @@ import org.example.explog.dto.response.ExperienceDetailResponse;
 import org.example.explog.dto.response.ExperienceIdResponse;
 import org.example.explog.dto.response.ExperienceListResponse;
 import org.example.explog.dto.response.ExperienceSummaryDto;
+import org.example.explog.service.AiAnalysisService;
 import org.example.explog.service.ExperienceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import java.util.List;
 public class ExperienceController {
 
     private final ExperienceService experienceService;
+    private final AiAnalysisService aiAnalysisService;
 
     @Operation(summary = "최근 경험 리스트 조회 (size 없으면 전체, 있으면 개수만큼)")
     @GetMapping("/recent")
@@ -38,6 +40,8 @@ public class ExperienceController {
     @PostMapping
     public ResponseEntity<ExperienceIdResponse> createExperience(@RequestBody @Valid ExperienceSaveRequest request) {
         Long savedId = experienceService.createExperience(request);
+
+        aiAnalysisService.runAnalysis(savedId, request.input());
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
