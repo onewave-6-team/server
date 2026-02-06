@@ -19,3 +19,7 @@ spring:
 
 server:
   forward-headers-strategy: framework
+
+gemini:
+  api-key: ${GEMINI_API_KEY}
+  url: "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-latest:generateContent?key="
