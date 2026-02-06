@@ -49,22 +49,32 @@ public class Experience extends BaseTimeEntity {
     private Folder folder;
 
     @Builder
-    public Experience(String input, SourceType sourceType, String sourceUrl, User user) {
+    public Experience(String input, String content, SourceType sourceType, String sourceUrl, User user) {
         this.input = input;
+        this.content = content;
         this.sourceType = sourceType;
         this.sourceUrl = sourceUrl;
         this.user = user;
         this.status = ExperienceStatus.ANALYZING;
     }
+
+    public void updateCategory(CategoryType category) {
+        this.category = category;
+    }
     
     public void updateStatus(ExperienceStatus status) {
         this.status = status;
     }
-    
-    public void updateContent(String title, String content, String summary, CategoryType category) {
+
+    public void updateTitle(String title) {
         this.title = title;
-        this.content = content;
+    }
+
+    public void updateSummary(String summary) {
         this.summary = summary;
-        this.category = category;
+    }
+
+    public void updateContent(String content) {
+        this.content = content;
     }
 }

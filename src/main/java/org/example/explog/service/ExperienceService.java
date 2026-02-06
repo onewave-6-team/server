@@ -28,7 +28,32 @@ public class ExperienceService {
     private final FolderRepository folderRepository;
     private final UserRepository userRepository;
 
-// ExperienceService.java
+    // ⭐ 비동기 처리를 위한 서비스 주입
+    private final AiAnalysisService aiAnalysisService;
+
+
+    // 2번 기능: 경험 수기 작성 (비동기 AI 호출 포함)
+    @Transactional
+    public Long createExperience(ExperienceSaveRequest request) {
+        User user = userRepository.findById(1L).orElseThrow();
+
+        // 1. DB에 우선 저장 (초기 상태: ANALYZING)
+        Experience experience = Experience.builder()
+                .input(request.input())
+                .content(request.input()) // 초기 내용은 input과 동일하게
+                .user(user)
+                .sourceType(SourceType.MANUAL)
+                .sourceUrl(null)
+                .build();
+
+        Experience savedExperience = experienceRepository.save(experience);
+
+        // 2. 비동기 AI 분석 요청 (결과를 기다리지 않고 실행만 시켜둠) 🚀
+        aiAnalysisService.runAnalysis(savedExperience.getId(), request.input());
+
+        // 3. ID 바로 반환 (프론트는 기다리지 않음)
+        return savedExperience.getId();
+    }
 
     public List<ExperienceSummaryDto> getRecentExperiences(Integer size) {
         // 1번 유저 하드코딩
@@ -50,22 +75,6 @@ public class ExperienceService {
                 .collect(Collectors.toList());
     }
 
-    // 2번 기능: 경험 수기 작성
-    @Transactional
-    public Long createExperience(ExperienceSaveRequest request) {
-        User user = userRepository.findById(1L).orElseThrow();
-
-        Experience experience = Experience.builder()
-                .input(request.input())
-                .user(user)
-                .sourceType(SourceType.MANUAL)
-                .sourceUrl(null)
-                .build();
-
-        Experience savedExperience = experienceRepository.save(experience);
-
-        return savedExperience.getId();
-    }
 
     // 3번 기능: 폴더 리스트 조회
     public List<FolderItemDto> getFolders() {

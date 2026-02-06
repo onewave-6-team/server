@@ -1,5 +1,6 @@
 package org.example.explog.repository;
 
+import org.example.explog.domain.Experience;
 import org.example.explog.domain.Qna;
 import org.example.explog.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,4 +15,6 @@ public interface QnaRepository extends JpaRepository<Qna, Long> {
     
     // 특정 경험에 달린 질문들 조회 (상세 페이지용)
     List<Qna> findAllByExperienceId(Long experienceId);
+
+    boolean existsByExperienceAndAnswerIsNull(Experience experience);
 }
