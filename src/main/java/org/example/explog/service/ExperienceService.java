@@ -102,6 +102,7 @@ public class ExperienceService {
                 experience.getSourceUrl(),
                 experience.getTitle(),
                 experience.getSummary(),
+                experience.getContent(),
                 experience.getCreatedAt()
         );
     }

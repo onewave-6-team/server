@@ -11,5 +11,6 @@ public record ExperienceSummaryDto(
         String sourceUrl,
         String title,
         String summary,
+        String content,
         LocalDateTime createdAt
 ) {}
