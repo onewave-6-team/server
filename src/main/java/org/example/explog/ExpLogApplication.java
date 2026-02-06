@@ -1,13 +1,13 @@
-package org.example.severdemo;
+package org.example.explog;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SeverDemoApplication {
+public class ExpLogApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SeverDemoApplication.class, args);
+        SpringApplication.run(ExpLogApplication.class, args);
     }
 
 }

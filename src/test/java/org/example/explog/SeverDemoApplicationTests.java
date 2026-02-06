@@ -1,4 +1,4 @@
-package org.example.severdemo;
+package org.example.explog;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
