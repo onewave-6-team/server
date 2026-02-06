@@ -76,6 +76,10 @@ public class AiAnalysisService {
 
             log.info("========== [Async] 분석 완료 (상태: {}) ==========", experience.getStatus());
 
+            if (experience.getFolder() != null) {
+                experience.getFolder().updateTimestamp();
+            }
+
         } catch (Exception e) {
             log.error("❌ AI 분석 중 에러 발생", e);
         }

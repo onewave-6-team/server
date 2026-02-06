@@ -48,6 +48,10 @@ public class ExperienceService {
 
         Experience savedExperience = experienceRepository.save(experience);
 
+        if (experience.getFolder() != null) {
+            experience.getFolder().updateTimestamp();
+        }
+
         // 3. ID 바로 반환 (프론트는 기다리지 않음)
         return savedExperience.getId();
     }

@@ -4,6 +4,8 @@ import org.example.explog.domain.enums.CategoryType;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -29,5 +31,9 @@ public class Folder extends BaseTimeEntity {
         this.name = name;
         this.category = category;
         this.user = user;
+    }
+
+    public void updateTimestamp() {
+        this.updatedAt = LocalDateTime.now();
     }
 }

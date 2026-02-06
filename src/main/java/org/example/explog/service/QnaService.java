@@ -84,6 +84,10 @@ public class QnaService {
             log.info("⏳ 아직 답변하지 않은 질문이 남아있습니다.");
         }
 
+        if (experience.getFolder() != null) {
+            experience.getFolder().updateTimestamp();
+        }
+
         // 메서드가 끝날 때 @Transactional에 의해 변경사항이 DB에 commit 됩니다.
     }
 }
