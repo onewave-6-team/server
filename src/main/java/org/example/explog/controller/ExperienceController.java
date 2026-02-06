@@ -22,12 +22,13 @@ public class ExperienceController {
 
     private final ExperienceService experienceService;
 
-    @Operation(summary = "최근 경험 리스트 조회 (Top 5)")
+    @Operation(summary = "최근 경험 리스트 조회 (size 없으면 전체, 있으면 개수만큼)")
     @GetMapping("/recent")
     public ResponseEntity<ExperienceListResponse> getRecentExperiences(
-            @RequestParam(defaultValue = "5") int size // 현재 로직은 무조건 5개지만, 확장성을 위해 남겨둠
+            @RequestParam(required = false) Integer size // 값이 없으면 null
     ) {
-        List<ExperienceSummaryDto> dtos = experienceService.getRecentExperiences();
+        // Service에 null 또는 숫자를 그대로 넘김
+        List<ExperienceSummaryDto> dtos = experienceService.getRecentExperiences(size);
         return ResponseEntity.ok(ExperienceListResponse.from(dtos));
     }
 

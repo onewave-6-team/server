@@ -1,6 +1,7 @@
 package org.example.explog.dto.response;
 
 import org.example.explog.domain.enums.CategoryType;
+import org.example.explog.domain.enums.ExperienceStatus;
 import org.example.explog.domain.enums.SourceType;
 import java.time.LocalDateTime;
 
@@ -11,5 +12,6 @@ public record ExperienceDetailResponse(
         String sourceUrl,
         String title,
         LocalDateTime createdAt,
-        String content // 경험 상세 내용
+        String content,
+        ExperienceStatus experienceStatus
 ) {}

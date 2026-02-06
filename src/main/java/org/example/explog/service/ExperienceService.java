@@ -4,12 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.example.explog.domain.Experience;
 import org.example.explog.domain.Folder;
 import org.example.explog.domain.User;
+import org.example.explog.domain.enums.ExperienceStatus;
 import org.example.explog.domain.enums.SourceType;
 import org.example.explog.dto.request.ExperienceSaveRequest;
 import org.example.explog.dto.response.*;
 import org.example.explog.repository.ExperienceRepository;
 import org.example.explog.repository.FolderRepository;
 import org.example.explog.repository.UserRepository;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,12 +28,24 @@ public class ExperienceService {
     private final FolderRepository folderRepository;
     private final UserRepository userRepository;
 
-    // 1번 기능: 최근 경험 조회 (Top 5)
-    public List<ExperienceSummaryDto> getRecentExperiences() {
-        // [하드코딩] 무조건 1번 유저 데이터만 가져옴
+// ExperienceService.java
+
+    public List<ExperienceSummaryDto> getRecentExperiences(Integer size) {
+        // 1번 유저 하드코딩
         User user = userRepository.findById(1L).orElseThrow();
-        
-        return experienceRepository.findTop5ByUserOrderByCreatedAtDesc(user).stream()
+
+        List<Experience> experiences;
+
+        if (size == null) {
+            // [size가 없으면] -> 전체 조회
+            experiences = experienceRepository.findAllByUserAndStatusNotOrderByCreatedAtDesc(user, ExperienceStatus.ANALYZING);
+        } else {
+            // Analyzing 상태 제외
+            Pageable limit = PageRequest.of(0, size);
+            experiences = experienceRepository.findByUserAndStatusNotOrderByCreatedAtDesc(user, ExperienceStatus.ANALYZING, limit);
+        }
+
+        return experiences.stream()
                 .map(this::mapToSummaryDto)
                 .collect(Collectors.toList());
     }
@@ -89,7 +104,8 @@ public class ExperienceService {
                 experience.getSourceUrl(),
                 experience.getTitle(),
                 experience.getCreatedAt(),
-                experience.getContent()
+                experience.getContent(),
+                experience.getStatus()
         );
     }
 
@@ -103,7 +119,8 @@ public class ExperienceService {
                 experience.getTitle(),
                 experience.getSummary(),
                 experience.getContent(),
-                experience.getCreatedAt()
+                experience.getCreatedAt(),
+                experience.getStatus()
         );
     }
 }
