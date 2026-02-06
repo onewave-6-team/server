@@ -30,6 +30,7 @@ public class QnaService {
         return qnaRepository.findAllByExperience_UserAndAnswerIsNullOrderByCreatedAtDesc(user).stream()
                 .map(qna -> new QuestionSummaryDto(
                         qna.getId(),
+                        qna.getExperience().getId(),
                         qna.getExperience().getSourceType(),
                         qna.getExperience().getTitle(),
                         qna.getQuestion(),
